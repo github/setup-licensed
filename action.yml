@@ -1,13 +1,13 @@
-name: 'Wait'
-description: 'Wait a designated number of milliseconds'
+name: 'Setup github/licensed'
+description: 'Setup github/licensed for use in GitHub Actions workflows'
 inputs:
-  milliseconds:  # id of input
-    description: 'number of milliseconds to wait'
+  version:
+    description: 'The github/licensed version to install'
     required: true
-    default: '1000'
-outputs:
-  time: # output will be available to future steps 
-    description: 'The message to output'
+  install-dir:
+    description: 'The target install directory for the github/licensed executable'
+    default: '/usr/local/bin'
+    required: false
 runs:
   using: 'node12'
-  main: 'index.js'
+  main: 'lib/index.js'
