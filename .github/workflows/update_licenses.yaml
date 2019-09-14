@@ -1,0 +1,40 @@
+name: "Update and check dependency data"
+on:
+  push:
+    branches:
+      - 'releases/*'
+
+jobs:
+  licensed:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v1
+      with:
+        ref: ${{github.ref}} # checkout branch not SHA
+
+    - run: npm install --production
+
+    - name: Run setup-licensed
+      uses: ./
+      with:
+        version: '2.x'
+
+    - run: licensed cache
+    - name: Push cached file updates
+      run: |
+        git config --global user.name "github/licensed auto update"
+        git config --global user.email "licensed@github.com"
+        git remote set-url origin "https://${GITHUB_TOKEN}@github.com/${GITHUB_REPOSITORY}.git"
+        BRANCH="$(echo "$GITHUB_REF" | sed 's,refs/heads/\(.*\),\1,')"
+
+        git checkout "$BRANCH"
+
+        git add .licenses
+        if ! git diff-index --quiet HEAD -- .licenses; then
+          git commit -m "Update cached license data"
+          git push --set-upstream origin "$BRANCH"
+        fi
+      env:
+        GITHUB_TOKEN: ${{ secrets.AUTH_TOKEN }}
+
+    - run: licensed status
