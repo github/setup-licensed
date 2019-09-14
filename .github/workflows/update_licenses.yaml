@@ -22,7 +22,7 @@ jobs:
     - run: licensed cache
     - name: Push cached file updates
       run: |
-        git config --global user.name "github/licensed auto update"
+        git config --global user.name "github/licensed"
         git config --global user.email "licensed@github.com"
         git remote set-url origin "https://${GITHUB_TOKEN}@github.com/${GITHUB_REPOSITORY}.git"
         BRANCH="$(echo "$GITHUB_REF" | sed 's,refs/heads/\(.*\),\1,')"
@@ -31,7 +31,7 @@ jobs:
 
         git add .licenses
         if ! git diff-index --quiet HEAD -- .licenses; then
-          git commit -m "Update cached license data"
+          git commit -m "Auto-update cached data"
           git push --set-upstream origin "$BRANCH"
         fi
       env:
