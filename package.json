@@ -1,32 +1,35 @@
 {
-  "name": "javascript-action",
+  "name": "setup-licensed",
   "version": "1.0.0",
-  "description": "JavaScript Action Template",
-  "main": "index.js",
+  "description": "Setup github/licensed for use in GitHub Actions workflows.",
+  "main": "lib/index.js",
   "scripts": {
-    "lint": "eslint index.js",
-    "test": "eslint index.js && jest"
+    "lint": "eslint lib",
+    "test": "eslint lib && jest"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/actions/javascript-action.git"
+    "url": "git+https://github.com/jonabc/setup-licensed.git"
   },
   "keywords": [
     "GitHub",
-    "Actions",
-    "JavaScript"
+    "Licensed"
   ],
-  "author": "GitHub",
+  "author": "Jon Ruskin",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/actions/javascript-action/issues"
+    "url": "https://github.com/jonabc/setup-licensed/issues"
   },
-  "homepage": "https://github.com/actions/javascript-action#readme",
+  "homepage": "https://github.com/jonabc/setup-licensed#readme",
   "dependencies": {
-    "@actions/core": "^1.1.0"
+    "@actions/core": "^1.1.0",
+    "@actions/exec": "^1.0.1",
+    "@actions/io": "^1.0.1",
+    "@octokit/rest": "^16.28.9"
   },
   "devDependencies": {
     "eslint": "^6.3.0",
-    "jest": "^24.9.0"
+    "jest": "^24.8.0",
+    "nock": "^11.3.3"
   }
 }
