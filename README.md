@@ -1,21 +1,24 @@
 # setup-licensed
 
-This action sets up [github/licensed](https://github.com/github/licensed) for use in actions by installing a version of github/licensed and adding it to PATH.  Note that this action will overwrite any version of the github/licensed executable already installed at the `install-dir` input.
+Set up [github/licensed](https://github.com/github/licensed) for use in actions.  Installs an executable for the specified `version` input and target platform.
 
-The action will fail if a github/licensed executable isn't found for the specified version or target platform.
+The action will fail if an licensed package isn't available for the specified version and target platform.  Licensed is currently supported on macOS and linux platforms.
+
+**Note**: this action will overwrite any version of the github/licensed executable already installed at the `install-dir` input.
 
 # Usage
 
 See [action.yml](action.yml)
 
-Basic:
+list dependencies:
 ```yaml
 steps:
 - uses: actions/checkout@master
 - uses: jonabc/setup-licensed@v1
   with:
-    version: '2.x' # required: must be valid semver
+    version: '2.x' # required: must satisfy semver.validRange
     install-dir: /path/to/install/at # optional: defaults to /usr/local/bin
+- run: npm install # install dependencies in local environment
 - run: licensed list
 ```
 
