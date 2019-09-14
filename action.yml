@@ -1,5 +1,8 @@
 name: 'Setup github/licensed'
 description: 'Setup github/licensed for use in GitHub Actions workflows'
+branding:
+  icon: tool
+  color: green  
 inputs:
   version:
     description: 'The github/licensed version to install'
