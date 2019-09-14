@@ -1,108 +1,30 @@
-# Create a JavaScript Action
+# setup-licensed
 
-Use this template to bootstrap the creation of a JavaScript action.:rocket:
+This action sets up [github/licensed](https://github.com/github/licensed) for use in actions by installing a version of github/licensed and adding it to PATH.  Note that this action will overwrite any version of the github/licensed executable already installed at the `install-dir` input.
 
-This template includes tests, linting, a validation workflow, publishing, and versioning guidance.  
+The action will fail if a github/licensed executable isn't found for the specified version or target platform.
 
-If you are new, there's also a simpler introduction.  See the [Hello World JavaScript Action](https://github.com/actions/hello-world-javascript-action)
+# Usage
 
-## Create an action from this template
+See [action.yml](action.yml)
 
-Click the `Use this Template` and provide the new repo details for your action
-
-## Code in Master
-
-Install the dependencies  
-```bash
-$ npm install
-```
-
-Run the tests :heavy_check_mark:  
-```bash
-$ npm test
-
- PASS  ./index.test.js
-  ✓ throws invalid number (3ms)
-  ✓ wait 500 ms (504ms)
-  ✓ test runs (95ms)
-
-...
-```
-
-## Change action.yml
-
-The action.yml contains defines the inputs and output for your action.
-
-Update the action.yml with your name, description, inputs and outputs for your action.
-
-See the [documentation](https://help.github.com/en/articles/metadata-syntax-for-github-actions)
-
-## Change the Code
-
-Most toolkit and CI/CD operations involve async operations so the action is run in an async function.
-
-```javascript
-const core = require('@actions/core');
-...
-
-async function run() {
-  try { 
-      ...
-  } 
-  catch (error) {
-    core.setFailed(error.message);
-  }
-}
-
-run()
-```
-
-See the [toolkit documentation](https://github.com/actions/toolkit/blob/master/README.md#packages) for the various packages.
-
-## Publish to a distribution branch
-
-Actions are run from GitHub repos.  We will create a releases branch and only checkin production modules (core in this case). 
-
-Comment out node_modules in .gitignore and create a releases/v1 branch
-```bash
-# Dependency directories
-# node_modules/
-```
-
-```bash
-$ git checkout -b releases/v1
-$ git commit -a -m "prod dependencies"
-```
-
-```bash
-$ npm prune --production
-$ git add node_modules
-$ git commit -a -m "prod dependencies"
-$ git push origin releases/v1
-```
-
-Your action is now published! :rocket: 
-
-See the [versioning documentation](https://github.com/actions/toolkit/blob/master/docs/action-versioning.md)
-
-## Validate
-
-You can now validate the action by referencing the releases/v1 branch
-
+Basic:
 ```yaml
-uses: actions/javascript-action@releases/v1
-with:
-  milliseconds: 1000
+steps:
+- uses: actions/checkout@master
+- uses: jonabc/setup-licensed@v1
+  with:
+    version: '2.x' # required: must be valid semver
+    install-dir: /path/to/install/at # optional: defaults to /usr/local/bin
+- run: licensed list
 ```
 
-See the [actions tab](https://github.com/actions/javascript-action/actions) for runs of this action! :rocket:
+For an end-to-end solution to cache and check dependency metadata using GitHub Actions, see [update_licenses.yaml](.github/workflows/update_licenses.yaml)
 
-## Usage:
+# License
 
-After testing you can [create a v1 tag](https://github.com/actions/toolkit/blob/master/docs/action-versioning.md) to reference the stable and tested action
+The scripts and documentation in this project are released under the [MIT License](LICENSE)
 
-```yaml
-uses: actions/javascript-action@v1
-with:
-  milliseconds: 1000
-```
+# Contributions
+
+Contributions are welcome!
