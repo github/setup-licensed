@@ -35,6 +35,6 @@ jobs:
           git push --set-upstream origin "$BRANCH"
         fi
       env:
-        GITHUB_TOKEN: ${{ secrets.AUTH_TOKEN }}
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
     - run: licensed status
