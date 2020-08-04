@@ -18,23 +18,13 @@ jobs:
       uses: ./
       with:
         version: '2.x'
+        github_token: ${{ secrets.GITHUB_TOKEN }}
 
     - run: licensed cache
-    - name: Push cached file updates
-      run: |
-        git config --global user.name "github/licensed"
-        git config --global user.email "licensed@github.com"
-        git remote set-url origin "https://${GITHUB_TOKEN}@github.com/${GITHUB_REPOSITORY}.git"
-        BRANCH="$(echo "$GITHUB_REF" | sed 's,refs/heads/\(.*\),\1,')"
-
-        git checkout "$BRANCH"
-
-        git add .licenses
-        if ! git diff-index --quiet HEAD -- .licenses; then
-          git commit -m "Auto-update cached data"
-          git push --set-upstream origin "$BRANCH"
-        fi
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    - uses: jonabc/licensed-ci@v1
+      with:
+        workflow: branch
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+        cleanup_on_success: 'true'
 
     - run: licensed status
