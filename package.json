@@ -5,7 +5,8 @@
   "main": "lib/index.js",
   "scripts": {
     "lint": "eslint lib",
-    "test": "eslint lib && jest"
+    "test": "eslint lib && jest",
+    "package": "ncc build lib/index.js -o dist"
   },
   "repository": {
     "type": "git",
@@ -28,6 +29,7 @@
     "@octokit/rest": "^16.28.9"
   },
   "devDependencies": {
+    "@zeit/ncc": "^0.22.3",
     "eslint": "^6.3.0",
     "jest": "^25.0",
     "nock": "^11.3.3"
