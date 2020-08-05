@@ -1,8 +1,8 @@
 # setup-licensed
 
-Set up [github/licensed](https://github.com/github/licensed) for use in actions.  Installs an executable for the specified `version` input and target platform.
+Set up [github/licensed](https://github.com/github/licensed) for use in actions by installing an executable for the specified `version` input and target platform.
 
-The action will fail if an licensed package isn't available for the specified version and target platform.  Licensed is currently supported on macOS and linux platforms.
+The action will fail if a licensed package isn't available for the specified version and target platform.  Licensed is currently supported on macOS and linux platforms.
 
 **Note**: this action will overwrite any version of the github/licensed executable already installed at the `install-dir` input.
 
@@ -18,6 +18,7 @@ steps:
   with:
     version: '2.x' # required: must satisfy semver.validRange
     install-dir: /path/to/install/at # optional: defaults to /usr/local/bin
+    github_token: # optional: allows users to make authenticated requests to GitHub's APIs
 - run: npm install # install dependencies in local environment
 - run: licensed list
 ```

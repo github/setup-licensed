@@ -1,9 +1,12 @@
 const fs = require('fs').promises;
 const nock = require('nock');
+const Octokit = require('@octokit/rest');
 const path = require('path');
 
 const utils = require('../lib/utils');
 const releases = require('./fixtures/releases.json');
+
+const github = new Octokit();
 
 describe('getReleases', () => {
   beforeEach(() => {
@@ -13,11 +16,11 @@ describe('getReleases', () => {
   });
 
   it('lists releases from github/licensed', () => {
-    return expect(utils.getReleases()).resolves.toBeInstanceOf(Array);
+    return expect(utils.getReleases(github)).resolves.toBeInstanceOf(Array);
   });
 
   it('filters releases without any assets', async () => {
-    const releases = await utils.getReleases();
+    const releases = await utils.getReleases(github);
     const release = releases.find((release) => release.tag_name === '2.3.1');
     expect(release).toBeUndefined();
   })
@@ -95,7 +98,7 @@ describe('installLicensed', () => {
       .get(`/repos/github/licensed/releases/assets/${asset.id}`)
       .replyWithFile(200, archiveFixture, { 'Content-Type': 'application/octet-stream' });
 
-    await utils.installLicensedFromReleaseAsset(asset, path.dirname(licensed));
+    await utils.installLicensedFromReleaseAsset(github, asset, path.dirname(licensed));
     await fs.access(licensed);
   });
 });

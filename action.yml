@@ -2,8 +2,11 @@ name: 'Setup github/licensed'
 description: 'Setup github/licensed for use in GitHub Actions workflows'
 branding:
   icon: check
-  color: green  
+  color: green
 inputs:
+  github_token:
+    description: 'Authentication token to use with the GitHub API'
+    required: false
   version:
     description: 'The github/licensed version to install'
     required: true
@@ -13,4 +16,4 @@ inputs:
     required: false
 runs:
   using: 'node12'
-  main: 'lib/index.js'
+  main: 'dist/index.js'
