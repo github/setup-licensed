@@ -5,7 +5,8 @@ const path = require('path');
 const semver = require('semver');
 
 const utils = require('../lib/utils');
-const dirtyReleases = require('./fixtures/releases.json');
+const releases = require('./fixtures/releases.json');
+const dirtyReleases = require('./fixtures/dirty_releases.json');
 
 const github = new Octokit();
 
@@ -32,8 +33,6 @@ describe('getReleases', () => {
     expect(release).toBeUndefined();
   })
 });
-
-const releases = dirtyReleases.filter((release) => release.assets.length > 0 && semver.valid(release.tag_name));
 
 describe('findReleaseForVersion', () => {
 
