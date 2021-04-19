@@ -7537,7 +7537,7 @@ async function getReleases(github) {
     assets: release.assets.map((asset) => ({ id: asset.id, name: asset.name, state: asset.state }))
   }));
 
-  return releases.filter((release) => release.assets.length > 0);
+  return releases.filter((release) => release.assets.length > 0 && semver.valid(release.tag_name));
 }
 
 function findReleaseForVersion(releases, version) {
