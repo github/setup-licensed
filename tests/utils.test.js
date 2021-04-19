@@ -2,9 +2,10 @@ const fs = require('fs').promises;
 const nock = require('nock');
 const Octokit = require('@octokit/rest');
 const path = require('path');
+const semver = require('semver');
 
 const utils = require('../lib/utils');
-const releases = require('./fixtures/releases.json');
+const dirtyReleases = require('./fixtures/releases.json');
 
 const github = new Octokit();
 
@@ -12,7 +13,7 @@ describe('getReleases', () => {
   beforeEach(() => {
     nock('https://api.github.com')
       .get('/repos/github/licensed/releases')
-      .reply(200, releases);
+      .reply(200, dirtyReleases);
   });
 
   it('lists releases from github/licensed', () => {
@@ -24,9 +25,18 @@ describe('getReleases', () => {
     const release = releases.find((release) => release.tag_name === '2.3.1');
     expect(release).toBeUndefined();
   })
+
+  it('filters releases with invalid semver tags', async () => {
+    const releases = await utils.getReleases(github);
+    const release = releases.find((release) => release.tag_name === 'pre-release-disable-bundler-ruby-packer');
+    expect(release).toBeUndefined();
+  })
 });
 
+const releases = dirtyReleases.filter((release) => release.assets.length > 0 && semver.valid(release.tag_name));
+
 describe('findReleaseForVersion', () => {
+
   it('matches a specific version', () => {
     const release = utils.findReleaseForVersion(releases, '2.3.2');
     expect(release).not.toBeNull();
@@ -34,21 +44,21 @@ describe('findReleaseForVersion', () => {
   });
 
   it('matches a major.x version', () => {
-    const release = utils.findReleaseForVersion(releases, '1.x');
+    const release = utils.findReleaseForVersion(releases, '2.x');
     expect(release).not.toBeNull();
-    expect(release.tag_name).toEqual('1.5.2');
+    expect(release.tag_name).toEqual('2.15.2');
   });
 
   it('matches a major.minor.x version', () => {
-    const release = utils.findReleaseForVersion(releases, '2.0.x');
+    const release = utils.findReleaseForVersion(releases, '2.9.x');
     expect(release).not.toBeNull();
-    expect(release.tag_name).toEqual('2.0.1');
+    expect(release.tag_name).toEqual('2.9.2');
   });
 
   it('matches an empty string as latest version', () => {
     const release = utils.findReleaseForVersion(releases, '');
     expect(release).not.toBeNull();
-    expect(release.tag_name).toEqual('2.3.2');
+    expect(release.tag_name).toEqual('2.15.2');
   });
 
   it('returns null if a matching release isn\'t found', () => {
