@@ -98,7 +98,6 @@ describe('findReleaseAssetForPlatform', () => {
 });
 
 describe('installLicensed', () => {
-  const archiveFixture = path.join(__dirname, 'fixtures', 'licensed.tar.gz');
   let archivePath;
   let octokit;
   let requestEndpoint;
@@ -130,8 +129,7 @@ describe('installLicensed', () => {
   });
 
   it('installs licensed from an asset', async () => {
-    archive = await fs.promises.readFile(archiveFixture, { encoding: "utf-8" });
-    requestEndpoint.resolves({ status: 200, data: archive });
+    requestEndpoint.resolves({ status: 200, data: 'archive' });
     
     await utils.installLicensedFromReleaseAsset(octokit, { id: 1 }, 'path/to/licensed');
 
@@ -151,7 +149,7 @@ describe('installLicensed', () => {
 
     expect(fs.promises.mkdtemp.callCount).toEqual(1);
     expect(fs.promises.writeFile.callCount).toEqual(1);
-    expect(fs.promises.writeFile.getCall(0).args).toEqual([archivePath, Buffer.from(archive)])
+    expect(fs.promises.writeFile.getCall(0).args).toEqual([archivePath, Buffer.from('archive')])
     
     expect(io.which.callCount).toEqual(1);
     expect(io.which.getCall(0).args).toEqual(['tar', true]);
