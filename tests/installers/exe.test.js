@@ -7,15 +7,15 @@ const path = require('path');
 const sinon = require('sinon');
 
 const installer = require('../../lib/installers/exe');
+const utils = require('../../lib/utils');
 const releases = require('../fixtures/releases.json');
-const dirtyReleases = require('../fixtures/dirty_releases.json');
 
 describe('getReleases', () => {
   let octokit;
   let listReleasesEndpoint;
 
   beforeEach(() => {
-    listReleasesEndpoint = sinon.stub().resolves({ data: dirtyReleases });
+    listReleasesEndpoint = sinon.stub().resolves({ data: releases });
     octokit = {
       repos: {
         listReleases: listReleasesEndpoint
@@ -38,43 +38,28 @@ describe('getReleases', () => {
     const release = releases.find((release) => release.tag_name === '2.3.1');
     expect(release).toBeUndefined();
   })
-
-  it('filters releases with invalid semver tags', async () => {
-    const releases = await installer.getReleases(octokit);
-    const release = releases.find((release) => release.tag_name === 'pre-release-disable-bundler-ruby-packer');
-    expect(release).toBeUndefined();
-  })
 });
 
 describe('findReleaseForVersion', () => {
-
-  it('matches a specific version', () => {
-    const release = installer.findReleaseForVersion(releases, '2.3.2');
-    expect(release).not.toBeNull();
-    expect(release.tag_name).toEqual('2.3.2');
+  beforeEach(() => {
+    sinon.spy(utils, 'findVersion');
   });
 
-  it('matches a major.x version', () => {
-    const release = installer.findReleaseForVersion(releases, '2.x');
-    expect(release).not.toBeNull();
-    expect(release.tag_name).toEqual('2.15.2');
+  afterEach(() => {
+    sinon.restore();
   });
 
-  it('matches a major.minor.x version', () => {
-    const release = installer.findReleaseForVersion(releases, '2.9.x');
-    expect(release).not.toBeNull();
-    expect(release.tag_name).toEqual('2.9.2');
-  });
-
-  it('matches an empty string as latest version', () => {
-    const release = installer.findReleaseForVersion(releases, '');
-    expect(release).not.toBeNull();
-    expect(release.tag_name).toEqual('2.15.2');
+  it('finds a release matching a version', () => {
+    const expectedRelease = releases.find(r => r.tag_name === '2.3.2');
+    expect(installer.findReleaseForVersion(releases, '2.3.x')).toEqual(expectedRelease);
+    expect(utils.findVersion.callCount).toEqual(1);
+    expect(utils.findVersion.getCall(0).args).toEqual([releases.map(r => r.tag_name), '2.3.x']);
   });
 
   it('returns null if a matching release isn\'t found', () => {
-    const release = installer.findReleaseForVersion(releases, '1.0.0');
-    expect(release).toBeNull();
+    expect(installer.findReleaseForVersion(releases, 'abc')).toEqual(null);
+    expect(utils.findVersion.callCount).toEqual(1);
+    expect(utils.findVersion.getCall(0).args).toEqual([releases.map(r => r.tag_name), 'abc']);
   });
 });
 

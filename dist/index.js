@@ -1196,8 +1196,12 @@ async function availableGemVersions(gemExe) {
   return versionsMatch.groups.versions.split(',').map(v => v.trim());
 }
 
-async function install(gemExe, version) {
-  core.info('rubygems environment detected, installing licensed gem');
+async function install(version) {
+  const gemExe = await getGemExecutable();
+  if (!gemExe) {
+    core.info('rubygems environment not available');
+    return;
+  }
 
   const gemVersions = await availableGemVersions(gemExe);
   const gemVersion = findVersion(gemVersions, version);
@@ -9131,7 +9135,8 @@ const fs = __webpack_require__(747);
 const path = __webpack_require__(622);
 const Octokit = __webpack_require__(0);
 const os = __webpack_require__(87);
-const semver = __webpack_require__(280);
+
+const utils = __webpack_require__(611);
 
 async function getReleases(github) {
   const { data } = await github.repos.listReleases({
@@ -9144,17 +9149,16 @@ async function getReleases(github) {
     assets: release.assets.map((asset) => ({ id: asset.id, name: asset.name, state: asset.state }))
   }));
 
-  return releases.filter((release) => release.assets.length > 0 && semver.valid(release.tag_name));
+  return releases.filter((release) => release.assets.length > 0);
 }
 
 function findReleaseForVersion(releases, version) {
-  const versions = releases.map((release) => release.tag_name);
-  const foundVersion = semver.maxSatisfying(versions, version);
-  if (!foundVersion) {
+  const found = utils.findVersion(releases.map(r => r.tag_name), version);
+  if (!found) {
     return null;
   }
 
-  return releases.find((release) => release.tag_name === foundVersion);
+  return releases.find(r => r.tag_name === found);
 }
 
 function findReleaseAssetForPlatform(release, platform) {
