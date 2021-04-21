@@ -1,0 +1,49 @@
+name: Test running setup-licensed
+
+on:
+  # run on demand
+  workflow_dispatch:
+
+jobs:
+  gem:
+    runs-on: ubuntu-latest
+
+    steps:
+      # checkout the repo
+      - uses: actions/checkout@v2
+      
+      # install ruby
+      - uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: "3.x"
+
+      # install node
+      - uses: actions/setup-node@v2
+        with:
+          node-version: "14"
+
+      # run the action
+      - name: Run setup-licensed
+        uses: ./
+        with:
+          version: '2.x'
+
+  exe:
+    runs-on: ubuntu-latest
+
+    steps:
+      # checkout the repo
+      - uses: actions/checkout@v2
+      
+      # do not install ruby
+
+      # install node
+      - uses: actions/setup-node@v2
+        with:
+          node-version: "14"
+
+      # run the action
+      - name: Run setup-licensed
+        uses: ./
+        with:
+          version: '2.x'
