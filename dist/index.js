@@ -1177,18 +1177,17 @@ const core = __webpack_require__(470);
 const exec = __webpack_require__(986);
 const io = __webpack_require__(1);
 
-const { findVersion } = __webpack_require__(611);
+const utils = __webpack_require__(611);
 
 async function getGemExecutable() {
   return await io.which('gem', false);
 }
 
 async function availableGemVersions(gemExe) {
-  const listOutput = await exec(gemExe, ['list', 'licensed', '--exact', '--remote', '--all', '--quiet']);
-  // eslint-disable-next-line no-useless-escape
-  const versionsMatch = listOutput.match(/\((?<versions>([\d\.]+(,\s)?)*)\)/g);
-  if (!versionsMatch || !versionsMatch.groups.versions) {
-    core.warn('no versions found from gem list licensed');
+  const listOutput = await exec.exec(gemExe, ['list', 'licensed', '--exact', '--remote', '--all', '--quiet']);
+  const versionsMatch = listOutput.match(/\((?<versions>([^,)]+(,\s)?)*)\)/);
+  if (!versionsMatch || !versionsMatch.groups || !versionsMatch.groups.versions) {
+    core.warning('no versions found from `gem list licensed`');
     core.debug(listOutput);
     return [];
   }
@@ -1197,21 +1196,21 @@ async function availableGemVersions(gemExe) {
 }
 
 async function install(version) {
-  const gemExe = await getGemExecutable();
+  const gemExe = await module.exports.getGemExecutable();
   if (!gemExe) {
     core.info('rubygems environment not available');
-    return;
+    return null;
   }
 
-  const gemVersions = await availableGemVersions(gemExe);
-  const gemVersion = findVersion(gemVersions, version);
+  const gemVersions = await module.exports.availableGemVersions(gemExe);
+  const gemVersion = utils.findVersion(gemVersions, version);
   if (!gemVersion) {
-    throw new Error(`github/licensed (${version}) gem was not found`);
+    core.info(`github/licensed (${version}) gem was not found`);
+    return null;
   }
 
-  await exec(gemExe, ['install', 'licensed', '-v', version]);
-
-  core.info(`github/licensed (${version}) gem installed`);
+  await exec.exec(gemExe, ['install', 'licensed', '-v', gemVersion]);
+  return gemVersion;
 }
 
 module.exports = {
@@ -2346,8 +2345,22 @@ async function run() {
       throw new Error(`${version} is not a valid semantic version input`);
     }
 
-    // prefer installing licensed as a gem.  if that doesn't work, install the exe
-    await installers.exe(version);
+    // prefer installing licensed as a gem, otherwise install an exe
+    core.info(`attempting to install licensed gem matching "${version}"`);
+    let installedVersion = await installers.gem(version);
+    if (installedVersion) {
+      core.info(`licensed (${installedVersion}) gem installed`);
+      return;
+    }
+
+    core.info(`attempting to install licensed executable matching "${version}"`);
+    installedVersion = await installers.exe(version);
+    if (installedVersion) {
+      core.info(`licensed (${installedVersion}) executable installed`);
+      return;
+    }
+
+    throw new Error(`unable to install licensed matching "${version}"`);
   } catch (error) {
     core.setFailed(error.message);
   }
@@ -9201,7 +9214,12 @@ async function extractLicensedArchive(archive, installDir) {
 }
 
 async function install(version) {
-  const installDir = core.getInput('install-dir', { required: true });
+  const installDir = core.getInput('install-dir', { required: false });
+  if (!installDir) {
+    core.info('Input required and not supplied to install licensed executable: install-dir');
+    return null;
+  }
+
   const token = core.getInput('github_token', { required: false });
   const platform = os.platform();
 
@@ -9216,12 +9234,14 @@ async function install(version) {
   const releases = await module.exports.getReleases(authenticatedGithub);
   const releaseForVersion = await module.exports.findReleaseForVersion(releases, version);
   if (!releaseForVersion) {
-    throw new Error(`github/licensed (${version}) release was not found`);
+    core.info(`github/licensed (${version}) release was not found`);
+    return null;
   }
 
   const licensedReleaseAsset = await module.exports.findReleaseAssetForPlatform(releaseForVersion, platform);
   if (!licensedReleaseAsset) {
-    throw new Error(`github/licensed (${version}-${platform}) package was not found`);
+    core.info(`github/licensed (${version}-${platform}) package was not found`);
+    return null;
   }
 
   await io.mkdirP(installDir);
@@ -9232,8 +9252,7 @@ async function install(version) {
     core.addPath(installDir);
   }
 
-  const installedVersion = releaseForVersion.tag_name;
-  core.info(`github/licensed (${installedVersion}-${platform}) executable installed to ${installDir}`);
+  return releaseForVersion.tag_name;
 }
 
 module.exports = {
