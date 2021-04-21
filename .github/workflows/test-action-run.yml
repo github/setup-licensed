@@ -1,6 +1,12 @@
 name: Test running setup-licensed
 
 on:
+  pull_request:
+    types:
+      - opened
+      - reopened
+      - synchronize
+
   # run on demand
   workflow_dispatch:
 
