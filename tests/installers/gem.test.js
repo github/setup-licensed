@@ -38,18 +38,25 @@ describe('availableGemVersions', () => {
   });
 
   it('finds all remote licensed gem versions', async () => {
-    exec.exec.resolves(`licensed (${gemVersions.join(', ')})`);
+    exec.exec.callsFake((exe, args, options) => {
+      options.listeners.stdout(Buffer.from(`licensed (${gemVersions.join(', ')})`));
+      return Promise.resolve(0);
+    });
     const versions = await installer.availableGemVersions('gem');
     expect(versions).toEqual(gemVersions);
     expect(exec.exec.callCount).toEqual(1);
     expect(exec.exec.getCall(0).args).toEqual([
       'gem',
-      ['list', 'licensed', '--exact', '--remote', '--all', '--quiet']
+      ['list', 'licensed', '--exact', '--remote', '--all', '--quiet'],
+      expect.objectContaining({ listeners: { stdout: expect.any(Function) }})
     ]);
   });
 
   it('returns null if no gem versions are found', async () => {
-    exec.exec.resolves('licensed ()');
+    exec.exec.callsFake((exe, args, options) => {
+      options.listeners.stdout(Buffer.from('licensed ()'));
+      return Promise.resolve(0);
+    });
     const versions = await installer.availableGemVersions('gem');
     expect(versions).toEqual([]);
 
