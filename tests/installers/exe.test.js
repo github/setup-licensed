@@ -230,30 +230,33 @@ describe('install', () => {
     sinon.restore();
   });
 
-  it('raises an error when an installation directory is not given', async () => {
+  it('returns null when an installation directory is not given', async () => {
     delete process.env['INPUT_INSTALL-DIR'];
 
-    const promise = installer.install(version);
-    await expect(promise).rejects.toThrow('Input required and not supplied: install-dir');
+    await expect(installer.install(version)).resolves.toEqual(null);
+    expect(core.info.callCount).toEqual(1);
+    expect(core.info.getCall(0).args).toEqual(['Input required and not supplied to install licensed executable: install-dir']);
   });
 
-  it('throws when a release is not found', async() => {
+  it('returns null if a release is not found', async() => {
     installer.findReleaseForVersion.resolves(null);
 
-    const promise = installer.install(version);
-    await expect(promise).rejects.toThrow('github/licensed (2.3.2) release was not found');
+    await expect(installer.install(version)).resolves.toEqual(null);
+    expect(core.info.callCount).toEqual(1);
+    expect(core.info.getCall(0).args).toEqual(['github/licensed (2.3.2) release was not found']);
   });
 
-  it('throws when a release asset is not found', async () => {
+  it('returns null if a release asset is not found', async () => {
     installer.findReleaseAssetForPlatform.resolves(null);
 
-    const promise = installer.install(version);
-    await expect(promise).rejects.toThrow(`github/licensed (2.3.2-${os.platform()}) package was not found`);
+    await expect(installer.install(version)).resolves.toEqual(null);
+    expect(core.info.callCount).toEqual(1);
+    expect(core.info.getCall(0).args).toEqual([`github/licensed (2.3.2-${os.platform()}) package was not found`]);
   });
 
   it('runs', async () => {
     await installer.install(version);
-    expect(core.setFailed.callCount).toEqual(0);
+    expect(core.info.callCount).toEqual(0);
 
     expect(installer.getReleases.callCount).toEqual(1);
     expect(installer.getReleases.getCall(0).args).toMatchObject([
@@ -281,9 +284,6 @@ describe('install', () => {
 
     expect(installer.extractLicensedArchive.callCount).toEqual(1);
     expect(installer.extractLicensedArchive.getCall(0).args).toMatchObject([archivePath, installDir]);
-
-    expect(core.info.callCount).toEqual(1);
-    expect(core.info.getCall(0).args).toEqual([`github/licensed (2.3.2-${os.platform()}) executable installed to ${installDir}`]);
   });
 
   it('adds the install directory to the path if needed', async () => {
