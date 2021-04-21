@@ -36,14 +36,6 @@ describe('setup-licensed', () => {
     expect(core.setFailed.getCall(0).args).toEqual(['Input required and not supplied: version']);
   });
 
-  it('sets a failure when the version is invalid', async () => {
-    process.env.INPUT_VERSION = 'abc';
-
-    await run();
-    expect(core.setFailed.callCount).toEqual(1);
-    expect(core.setFailed.getCall(0).args).toEqual(['abc is not a valid semantic version input']);
-  });
-
   it('installs licensed from a gem', async () => {
     await run();
     expect(core.setFailed.callCount).toEqual(0);

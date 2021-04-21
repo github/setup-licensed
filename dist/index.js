@@ -2336,14 +2336,10 @@ module.exports = require("child_process");
 
 const core = __webpack_require__(470);
 const installers = __webpack_require__(480);
-const semver = __webpack_require__(280);
 
 async function run() {
   try {
     const version = core.getInput('version', { required: true });
-    if (!semver.validRange(version)) {
-      throw new Error(`${version} is not a valid semantic version input`);
-    }
 
     // prefer installing licensed as a gem, otherwise install an exe
     core.info(`attempting to install licensed gem matching "${version}"`);
@@ -8316,6 +8312,10 @@ function findVersion(versions, wanted) {
   const found = versions.find(v => v == wanted);
   if (found) {
     return found;
+  }
+
+  if (!semver.validRange(wanted)) {
+    return null;
   }
 
   return semver.maxSatisfying(
