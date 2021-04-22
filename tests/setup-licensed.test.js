@@ -56,10 +56,11 @@ describe('setup-licensed', () => {
     await run();
     expect(core.setFailed.callCount).toEqual(0);
 
-    expect(core.info.callCount).toEqual(3);
+    expect(core.info.callCount).toEqual(4);
     expect(core.info.getCall(0).args).toEqual([`attempting to install licensed gem matching "${version}"`]);
-    expect(core.info.getCall(1).args).toEqual([`attempting to install licensed executable matching "${version}"`]);
-    expect(core.info.getCall(2).args).toEqual([`licensed (${version}) executable installed`]);
+    expect(core.info.getCall(1).args).toEqual(['gem installation was not successful']);
+    expect(core.info.getCall(2).args).toEqual([`attempting to install licensed executable matching "${version}"`]);
+    expect(core.info.getCall(3).args).toEqual([`licensed (${version}) executable installed`]);
 
     expect(installers.gem.callCount).toEqual(1);
 
@@ -82,8 +83,10 @@ describe('setup-licensed', () => {
     await run();
     expect(core.setFailed.callCount).toEqual(1);
     expect(core.setFailed.getCall(0).args).toEqual([`unable to install licensed matching "${version}"`]);
-    expect(core.info.callCount).toEqual(2);
+    expect(core.info.callCount).toEqual(4);
     expect(core.info.getCall(0).args).toEqual([`attempting to install licensed gem matching "${version}"`]);
-    expect(core.info.getCall(1).args).toEqual([`attempting to install licensed executable matching "${version}"`]);
+    expect(core.info.getCall(1).args).toEqual(['gem installation was not successful']);
+    expect(core.info.getCall(2).args).toEqual([`attempting to install licensed executable matching "${version}"`]);
+    expect(core.info.getCall(3).args).toEqual(['exe installation was not successful']);
   });
 });
