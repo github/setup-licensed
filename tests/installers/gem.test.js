@@ -72,6 +72,7 @@ describe('install', () => {
 
   beforeEach(() => {
     sinon.stub(core, 'info');
+    sinon.stub(core, 'debug');
     sinon.stub(installer, 'getGemExecutable').resolves('gem');
     sinon.stub(installer, 'availableGemVersions').resolves(gemVersions);
     sinon.stub(utils, 'findVersion').returns(version);
@@ -98,7 +99,16 @@ describe('install', () => {
     await expect(installer.install(version)).resolves.toEqual(null);
     expect(exec.exec.callCount).toEqual(0);
     expect(core.info.callCount).toEqual(1);
-    expect(core.info.getCall(0).args).toEqual([`github/licensed (${version}) gem was not found`]  );
+    expect(core.info.getCall(0).args).toEqual([`github/licensed (${version}) gem was not found`]);
+  });
+
+  it('returns null when a gem installation fails', async() => {
+    exec.exec.rejects(new Error('failure'));
+
+    await expect(installer.install(version)).resolves.toEqual(null);
+    expect(exec.exec.callCount).toEqual(1);
+    expect(core.debug.callCount).toEqual(1);
+    expect(core.debug.getCall(0).args).toEqual(['failure']);
   });
 
   it('installs a licensed gem', async () => {

@@ -1216,8 +1216,13 @@ async function install(version) {
     return null;
   }
 
-  await exec.exec(gemExe, ['install', 'licensed', '-v', gemVersion]);
-  return gemVersion;
+  try {
+    await exec.exec(gemExe, ['install', 'licensed', '-v', gemVersion]);
+    return gemVersion;
+  } catch (e) {
+    core.debug(e.message);
+    return null;
+  }
 }
 
 module.exports = {
