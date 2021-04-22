@@ -1184,7 +1184,14 @@ async function getGemExecutable() {
 }
 
 async function availableGemVersions(gemExe) {
-  const listOutput = await exec.exec(gemExe, ['list', 'licensed', '--exact', '--remote', '--all', '--quiet']);
+  let listOutput = '';
+  const options = {
+    listeners: {
+      stdout: data => listOutput += data.toString()
+    }
+  };
+
+  await exec.exec(gemExe, ['list', 'licensed', '--exact', '--remote', '--all', '--quiet'], options);
   const versionsMatch = listOutput.match(/\((?<versions>([^,)]+(,\s)?)*)\)/);
   if (!versionsMatch || !versionsMatch.groups || !versionsMatch.groups.versions) {
     core.warning('no versions found from `gem list licensed`');
@@ -1209,8 +1216,13 @@ async function install(version) {
     return null;
   }
 
-  await exec.exec(gemExe, ['install', 'licensed', '-v', gemVersion]);
-  return gemVersion;
+  try {
+    await exec.exec(gemExe, ['install', 'licensed', '-v', gemVersion]);
+    return gemVersion;
+  } catch (e) {
+    core.debug(e.message);
+    return null;
+  }
 }
 
 module.exports = {
@@ -2348,6 +2360,7 @@ async function run() {
       core.info(`licensed (${installedVersion}) gem installed`);
       return;
     }
+    core.info('gem installation was not successful');
 
     core.info(`attempting to install licensed executable matching "${version}"`);
     installedVersion = await installers.exe(version);
@@ -2355,6 +2368,7 @@ async function run() {
       core.info(`licensed (${installedVersion}) executable installed`);
       return;
     }
+    core.info('exe installation was not successful');
 
     throw new Error(`unable to install licensed matching "${version}"`);
   } catch (error) {

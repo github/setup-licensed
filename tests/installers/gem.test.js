@@ -38,18 +38,25 @@ describe('availableGemVersions', () => {
   });
 
   it('finds all remote licensed gem versions', async () => {
-    exec.exec.resolves(`licensed (${gemVersions.join(', ')})`);
+    exec.exec.callsFake((exe, args, options) => {
+      options.listeners.stdout(Buffer.from(`licensed (${gemVersions.join(', ')})`));
+      return Promise.resolve(0);
+    });
     const versions = await installer.availableGemVersions('gem');
     expect(versions).toEqual(gemVersions);
     expect(exec.exec.callCount).toEqual(1);
     expect(exec.exec.getCall(0).args).toEqual([
       'gem',
-      ['list', 'licensed', '--exact', '--remote', '--all', '--quiet']
+      ['list', 'licensed', '--exact', '--remote', '--all', '--quiet'],
+      expect.objectContaining({ listeners: { stdout: expect.any(Function) }})
     ]);
   });
 
   it('returns null if no gem versions are found', async () => {
-    exec.exec.resolves('licensed ()');
+    exec.exec.callsFake((exe, args, options) => {
+      options.listeners.stdout(Buffer.from('licensed ()'));
+      return Promise.resolve(0);
+    });
     const versions = await installer.availableGemVersions('gem');
     expect(versions).toEqual([]);
 
@@ -65,6 +72,7 @@ describe('install', () => {
 
   beforeEach(() => {
     sinon.stub(core, 'info');
+    sinon.stub(core, 'debug');
     sinon.stub(installer, 'getGemExecutable').resolves('gem');
     sinon.stub(installer, 'availableGemVersions').resolves(gemVersions);
     sinon.stub(utils, 'findVersion').returns(version);
@@ -91,7 +99,16 @@ describe('install', () => {
     await expect(installer.install(version)).resolves.toEqual(null);
     expect(exec.exec.callCount).toEqual(0);
     expect(core.info.callCount).toEqual(1);
-    expect(core.info.getCall(0).args).toEqual([`github/licensed (${version}) gem was not found`]  );
+    expect(core.info.getCall(0).args).toEqual([`github/licensed (${version}) gem was not found`]);
+  });
+
+  it('returns null when a gem installation fails', async() => {
+    exec.exec.rejects(new Error('failure'));
+
+    await expect(installer.install(version)).resolves.toEqual(null);
+    expect(exec.exec.callCount).toEqual(1);
+    expect(core.debug.callCount).toEqual(1);
+    expect(core.debug.getCall(0).args).toEqual(['failure']);
   });
 
   it('installs a licensed gem', async () => {
