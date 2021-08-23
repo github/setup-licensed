@@ -9,7 +9,7 @@ updates:
     directory: /
     schedule:
       interval: weekly
-  - package-ecosystem: gomod
+  - package-ecosystem: npm
     directory: /
     schedule:
       interval: weekly
