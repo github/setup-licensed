@@ -25,15 +25,15 @@
   "dependencies": {
     "@actions/core": "^1.2.6",
     "@actions/exec": "^1.0.1",
-    "@actions/io": "^1.0.1",
+    "@actions/io": "^1.1.1",
     "@octokit/rest": "^16.28.9"
   },
   "devDependencies": {
-    "@zeit/ncc": "^0.22.3",
+    "@vercel/ncc": "^0.29.2",
     "eslint": "^6.3.0",
-    "husky": "^4.2.5",
+    "husky": "^7.0.1",
     "jest": "^26.0",
-    "sinon": "^10.0.0"
+    "sinon": "^11.1.2"
   },
   "husky": {
     "hooks": {
