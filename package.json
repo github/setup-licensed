@@ -23,16 +23,17 @@
   },
   "homepage": "https://github.com/jonabc/setup-licensed#readme",
   "dependencies": {
-    "@actions/core": "^1.2.6",
-    "@actions/exec": "^1.0.1",
+    "@actions/core": "^1.5.0",
+    "@actions/exec": "^1.1.0",
     "@actions/io": "^1.1.1",
-    "@octokit/rest": "^16.28.9"
+    "@octokit/rest": "^18.10.0",
+    "semver": "^7.3.5"
   },
   "devDependencies": {
-    "@vercel/ncc": "^0.29.2",
-    "eslint": "^6.3.0",
-    "husky": "^7.0.1",
-    "jest": "^26.0",
+    "@vercel/ncc": "^0.30.0",
+    "eslint": "^7.32.0",
+    "husky": "^7.0.2",
+    "jest": "^27.1.0",
     "sinon": "^11.1.2"
   },
   "husky": {

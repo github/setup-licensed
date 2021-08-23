@@ -1,16 +1,16 @@
 ---
-name: shebang-command
-version: 1.2.0
+name: "@octokit/graphql"
+version: 4.8.0
 type: npm
-summary: Get the command from a shebang
-homepage: https://github.com/kevva/shebang-command#readme
+summary: GitHub GraphQL API client for browsers and Node
+homepage: https://github.com/octokit/graphql.js#readme
 license: mit
 licenses:
-- sources: license
+- sources: LICENSE
   text: |
-    The MIT License (MIT)
+    The MIT License
 
-    Copyright (c) Kevin Martensson <kevinmartensson@gmail.com> (github.com/kevva)
+    Copyright (c) 2018 Octokit contributors
 
     Permission is hereby granted, free of charge, to any person obtaining a copy
     of this software and associated documentation files (the "Software"), to deal
@@ -29,6 +29,6 @@ licenses:
     LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
     OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
     THE SOFTWARE.
-- sources: readme.md
-  text: MIT © [Kevin Martensson](http://github.com/kevva)
+- sources: README.md
+  text: "[MIT](LICENSE)"
 notices: []
