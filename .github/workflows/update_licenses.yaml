@@ -11,6 +11,7 @@ jobs:
     - uses: actions/checkout@v2
       with:
         ref: ${{github.ref}} # checkout branch not SHA
+        depth: 0
 
     - run: npm install --production
 
