@@ -23,7 +23,7 @@
   },
   "homepage": "https://github.com/jonabc/setup-licensed#readme",
   "dependencies": {
-    "@actions/core": "^1.5.0",
+    "@actions/core": "^1.6.0",
     "@actions/exec": "^1.1.0",
     "@actions/io": "^1.1.1",
     "@octokit/rest": "^18.11.4",
