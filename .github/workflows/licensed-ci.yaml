@@ -28,14 +28,11 @@ jobs:
     - name: Run setup-licensed
       uses: ./
       with:
-        version: '2.x'
+        version: '3.x'
         github_token: ${{ secrets.GITHUB_TOKEN }}
 
-    - run: licensed cache
     - uses: jonabc/licensed-ci@v1
       with:
         workflow: branch
         github_token: ${{ secrets.GITHUB_TOKEN }}
         cleanup_on_success: 'true'
-
-    - run: licensed status
