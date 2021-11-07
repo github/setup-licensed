@@ -1,6 +1,6 @@
 {
   "name": "setup-licensed",
-  "version": "1.0.0",
+  "version": "1.1.1",
   "description": "Setup github/licensed for use in GitHub Actions workflows.",
   "main": "lib/index.js",
   "scripts": {
