@@ -13,7 +13,7 @@ jobs:
         ref: ${{github.ref}} # checkout branch not SHA
         fetch-depth: 0
 
-    - run: npm install --production
+    - run: npm install --production --ignore-scripts
 
     - name: Run setup-licensed
       uses: ./
