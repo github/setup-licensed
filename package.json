@@ -6,7 +6,8 @@
   "scripts": {
     "lint": "eslint lib",
     "test": "eslint lib && jest",
-    "package": "ncc build lib/index.js -o dist"
+    "package": "ncc build lib/index.js -o dist",
+    "prepare": "husky install"
   },
   "repository": {
     "type": "git",
