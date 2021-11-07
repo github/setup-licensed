@@ -1,8 +1,18 @@
-name: "Update and check dependency data"
+name: Verify cached license metadata
+
 on:
+  # run on pushes to main
   push:
     branches:
-      - 'releases/*'
+      - main
+  # run on all pull request events
+  pull_request:
+    types:
+      - opened
+      - reopened
+      - synchronize
+  # run on demand
+  workflow_dispatch:
 
 jobs:
   licensed:
