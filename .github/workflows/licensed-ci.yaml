@@ -1,8 +1,18 @@
-name: "Update and check dependency data"
+name: Verify cached license metadata
+
 on:
+  # run on pushes to main
   push:
     branches:
-      - 'releases/*'
+      - main
+  # run on all pull request events
+  pull_request:
+    types:
+      - opened
+      - reopened
+      - synchronize
+  # run on demand
+  workflow_dispatch:
 
 jobs:
   licensed:
@@ -13,19 +23,16 @@ jobs:
         ref: ${{github.ref}} # checkout branch not SHA
         fetch-depth: 0
 
-    - run: npm install --production
+    - run: npm install --production --ignore-scripts
 
     - name: Run setup-licensed
       uses: ./
       with:
-        version: '2.x'
+        version: '3.x'
         github_token: ${{ secrets.GITHUB_TOKEN }}
 
-    - run: licensed cache
     - uses: jonabc/licensed-ci@v1
       with:
         workflow: branch
         github_token: ${{ secrets.GITHUB_TOKEN }}
         cleanup_on_success: 'true'
-
-    - run: licensed status
