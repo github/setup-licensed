@@ -17,8 +17,10 @@ describe('getReleases', () => {
   beforeEach(() => {
     listReleasesEndpoint = sinon.stub().resolves({ data: releases });
     octokit = {
-      repos: {
-        listReleases: listReleasesEndpoint
+      rest: {
+        repos: {
+          listReleases: listReleasesEndpoint
+        }
       }
     };
   });
@@ -94,10 +96,12 @@ describe('downloadLicensedArchive', () => {
     endpointMerge = sinon.stub().returns('merged');
     octokit = {
       request: requestEndpoint,
-      repos: {
-        getReleaseAsset: {
-          endpoint: {
-            merge: endpointMerge
+      rest: {
+        repos: {
+          getReleaseAsset: {
+            endpoint: {
+              merge: endpointMerge
+            }
           }
         }
       }
@@ -278,7 +282,7 @@ describe('install', () => {
 
     expect(installer.downloadLicensedArchive.callCount).toEqual(1);
     expect(installer.downloadLicensedArchive.getCall(0).args).toMatchObject([
-      { repos: { getReleaseAsset: expect.any(Function) }},
+      { rest: { repos: { getReleaseAsset: expect.any(Function) }} },
       asset
     ]);
 
