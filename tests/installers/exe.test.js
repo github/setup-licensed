@@ -12,14 +12,15 @@ const releases = require('../fixtures/releases.json');
 
 describe('getReleases', () => {
   let octokit;
-  let listReleasesEndpoint;
+  let restPaginate;
 
   beforeEach(() => {
-    listReleasesEndpoint = sinon.stub().resolves({ data: releases });
+    restPaginate = sinon.stub().resolves(releases);
     octokit = {
+      paginate: restPaginate,
       rest: {
         repos: {
-          listReleases: listReleasesEndpoint
+          listReleases: sinon.stub()
         }
       }
     };
@@ -31,8 +32,8 @@ describe('getReleases', () => {
 
   it('lists releases from github/licensed', () => {
     expect(installer.getReleases(octokit)).resolves.toBeInstanceOf(Array);
-    expect(listReleasesEndpoint.callCount).toEqual(1);
-    expect(listReleasesEndpoint.getCall(0).args).toEqual([{ owner: 'github', repo: 'licensed' }]);
+    expect(restPaginate.callCount).toEqual(1);
+    expect(restPaginate.getCall(0).args).toEqual([octokit.rest.repos.listReleases, { owner: 'github', repo: 'licensed' }]);
   });
 
   it('filters releases without any assets', async () => {
