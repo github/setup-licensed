@@ -14,7 +14,7 @@ list dependencies:
 
 ```yaml
 steps:
-- uses: actions/checkout@v2
+- uses: actions/checkout@v3
   with:
     fetch-depth: 0 # prefer to use a full fetch for licensed workflows
 - uses: jonabc/setup-licensed@v1
