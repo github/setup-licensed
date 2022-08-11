@@ -26,7 +26,7 @@ steps:
 - run: licensed list
 ```
 
-For an end-to-end solution to cache and check dependency metadata using GitHub Actions, see [update_licenses.yaml](.github/workflows/update_licenses.yaml)
+For an end-to-end solution to cache and check dependency metadata using GitHub Actions, see [licensed-ci.yaml](.github/workflows/licensed-ci.yaml)
 
 ## License
 
