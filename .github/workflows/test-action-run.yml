@@ -27,13 +27,13 @@ jobs:
       # install node
       - uses: actions/setup-node@v3
         with:
-          node-version: "14"
+          node-version: "18.x"
 
       # run the action
       - name: Run setup-licensed
         uses: ./
         with:
-          version: '2.x'
+          version: '3.x'
 
   exe:
     runs-on: ubuntu-latest
@@ -47,10 +47,10 @@ jobs:
       # install node
       - uses: actions/setup-node@v3
         with:
-          node-version: "14"
+          node-version: "18.x"
 
       # run the action
       - name: Run setup-licensed
         uses: ./
         with:
-          version: '2.x'
+          version: '3.x'
