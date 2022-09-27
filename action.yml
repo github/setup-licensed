@@ -15,5 +15,5 @@ inputs:
     default: '/usr/local/bin'
     required: false
 runs:
-  using: 'node12'
+  using: 'node16'
   main: 'dist/index.js'
