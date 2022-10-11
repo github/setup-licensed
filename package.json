@@ -28,7 +28,7 @@
     "@actions/exec": "^1.1.1",
     "@actions/io": "^1.1.2",
     "@octokit/rest": "^19.0.4",
-    "semver": "^7.3.7"
+    "semver": "^7.3.8"
   },
   "devDependencies": {
     "@vercel/ncc": "^0.34.0",
