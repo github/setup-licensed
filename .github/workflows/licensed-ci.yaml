@@ -30,6 +30,8 @@ jobs:
         node-version: 18
 
     - uses: ruby/setup-ruby@v1
+      with:
+        ruby-version: '3.0'
 
     # install and run this action
     - run: npm install --production --ignore-scripts
