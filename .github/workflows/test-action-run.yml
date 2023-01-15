@@ -33,7 +33,7 @@ jobs:
       - name: Run setup-licensed
         uses: ./
         with:
-          version: '3.x'
+          version: '4.x'
 
   exe:
     runs-on: ubuntu-latest
