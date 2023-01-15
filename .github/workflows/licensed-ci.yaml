@@ -44,7 +44,7 @@ jobs:
     # run licensed-ci to check and update licenses
     - uses: jonabc/licensed-ci@v1
       with:
-        workflow: push-for-bots
+        workflow: push_for_bots
         dependabot_skip: 'true'
         github_token: ${{ secrets.GITHUB_TOKEN }}
         cleanup_on_success: 'true'
