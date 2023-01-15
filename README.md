@@ -29,7 +29,9 @@ steps:
 - run: npm install # install dependencies in local environment
 
 # setup ruby environment before running jonabc/setup-licensed
-- uses: ruby/setup-ruby@v1 
+- uses: ruby/setup-ruby@v1
+  with:
+    ruby-version: ruby
 
 - uses: jonabc/setup-licensed@v1
   with:
