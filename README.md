@@ -48,6 +48,14 @@ For an end-to-end solution to cache and check dependency metadata using GitHub A
 
 The scripts and documentation in this project are released under the [MIT License](LICENSE)
 
+## Support
+
+You can expect the following support.  See [SUPPORT](SUPPORT.md) for more information.
+
+- bug fixes
+- review of feature request issues
+- review of questions in discussions (_Coming Soon_)
+
 ## Contributions
 
 Contributions are welcome!
