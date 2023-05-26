@@ -1,6 +1,6 @@
 # setup-licensed
 
-Set up [github/licensed](https://github.com/github/licensed) for use in action workflows, at the specified `version` input and target platform.  The action will fail if licensed isn't available for the specified version and target platform.
+A GitHub Action to set up [github/licensed](https://github.com/github/licensed) for use in action workflows, at the specified `version` input and target platform.  The action will fail if licensed isn't available for the specified version and target platform.
 
 ## Installing licensed as a Ruby gem
 
@@ -48,6 +48,11 @@ For an end-to-end solution to cache and check dependency metadata using GitHub A
 
 The scripts and documentation in this project are released under the [MIT License](LICENSE)
 
+## Maintainers
+
+- @ajhenry
+- @lumaxis
+
 ## Support
 
 You can expect the following support.  See [SUPPORT](SUPPORT.md) for more information.
@@ -59,3 +64,7 @@ You can expect the following support.  See [SUPPORT](SUPPORT.md) for more inform
 ## Contributions
 
 Contributions are welcome!  See [CONTRIBUTING.md](./CONTRIBUTING.md) for more information on how to get involved.
+
+## Acknowledgement
+
+Huge thank you and appreciation to @jonabc for championing license compliance and maintaining licensed over the years.
