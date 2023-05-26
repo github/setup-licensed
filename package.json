@@ -11,7 +11,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/jonabc/setup-licensed.git"
+    "url": "git+https://github.com/github/setup-licensed.git"
   },
   "keywords": [
     "GitHub",
@@ -20,9 +20,9 @@
   "author": "Jon Ruskin",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/jonabc/setup-licensed/issues"
+    "url": "https://github.com/github/setup-licensed/issues"
   },
-  "homepage": "https://github.com/jonabc/setup-licensed#readme",
+  "homepage": "https://github.com/github/setup-licensed#readme",
   "dependencies": {
     "@actions/core": "^1.10.0",
     "@actions/exec": "^1.1.1",
