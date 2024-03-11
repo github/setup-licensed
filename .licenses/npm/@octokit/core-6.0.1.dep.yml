@@ -1,16 +1,16 @@
 ---
-name: whatwg-url
-version: 5.0.0
+name: "@octokit/core"
+version: 6.0.1
 type: npm
-summary: An implementation of the WHATWG URL Standard's URL API and parsing machinery
-homepage: https://github.com/jsdom/whatwg-url#readme
+summary: Extendable client for GitHub's REST & GraphQL APIs
+homepage: 
 license: mit
 licenses:
-- sources: LICENSE.txt
+- sources: LICENSE
   text: |
-    The MIT License (MIT)
+    The MIT License
 
-    Copyright (c) 2015–2016 Sebastian Mayr
+    Copyright (c) 2019 Octokit contributors
 
     Permission is hereby granted, free of charge, to any person obtaining a copy
     of this software and associated documentation files (the "Software"), to deal
@@ -29,4 +29,6 @@ licenses:
     LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
     OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
     THE SOFTWARE.
+- sources: README.md
+  text: "[MIT](LICENSE)"
 notices: []
