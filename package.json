@@ -23,6 +23,9 @@
     "url": "https://github.com/github/setup-licensed/issues"
   },
   "homepage": "https://github.com/github/setup-licensed#readme",
+  "engines": {
+    "node": ">=20.0.0 <21.0.0"
+  },
   "dependencies": {
     "@actions/core": "^1.10.0",
     "@actions/exec": "^1.1.1",
