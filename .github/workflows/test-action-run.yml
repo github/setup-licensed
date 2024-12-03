@@ -1,4 +1,6 @@
 name: Test running setup-licensed
+permissions:
+  contents: read
 
 on:
   pull_request:
@@ -17,9 +19,9 @@ jobs:
     steps:
       # checkout the repo
       - uses: actions/checkout@v4
-      
+
       # install ruby
-      - uses: ruby/setup-ruby@v1
+      - uses: ruby/setup-ruby@a2bbe5b1b236842c1cb7dd11e8e3b51e0a616acc
         with:
           bundler-cache: 'true'
           ruby-version: "3.0"
@@ -41,7 +43,7 @@ jobs:
     steps:
       # checkout the repo
       - uses: actions/checkout@v4
-      
+
       # do not install ruby
 
       # install node
