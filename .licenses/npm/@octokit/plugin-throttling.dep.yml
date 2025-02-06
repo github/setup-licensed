@@ -1,9 +1,9 @@
 ---
 name: "@octokit/plugin-throttling"
-version: 9.3.2
+version: 9.4.0
 type: npm
 summary: Octokit plugin for GitHub's recommended request throttling
-homepage: 
+homepage:
 license: mit
 licenses:
 - sources: LICENSE
