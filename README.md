@@ -1,5 +1,6 @@
 # setup-licensed
 
+**Please note: This action is deprecated and should no longer be used. The team at GitHub has ceased making and accepting code contributions or maintaining the issue tracker. Please migrate your workflows to the [licensee/setup-licensed](https://github.com/licensee/setup-licensed) action, which is maintained by the community.**
 A GitHub Action to set up [github/licensed](https://github.com/github/licensed) for use in action workflows, at the specified `version` input and target platform.  The action will fail if licensed isn't available for the specified version and target platform.
 
 ## Installing licensed as a Ruby gem
