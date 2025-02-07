@@ -1,5 +1,5 @@
-name: 'Setup github/licensed'
-description: 'Setup github/licensed for use in GitHub Actions workflows'
+name: 'Setup licensee/licensed'
+description: 'Setup licensee/licensed for use in GitHub Actions workflows'
 branding:
   icon: check
   color: green
@@ -8,10 +8,10 @@ inputs:
     description: 'Authentication token to use with the GitHub API'
     required: false
   version:
-    description: 'The github/licensed version to install'
+    description: 'The licensee/licensed version to install'
     required: true
   install-dir:
-    description: 'The target install directory for the github/licensed executable'
+    description: 'The target install directory for the licensee/licensed executable'
     default: '/usr/local/bin'
     required: false
 runs:
